@@ -123,7 +123,7 @@ namespace superIO{
   inline bool number2string(std::string &str, T const& value){
 
     #ifdef USE_BOOST
-    return number2stringBOOST(str, value);
+    return number2stringBoost(str, value);
     #else
     return number2stringSTD(str, value);
     #endif
