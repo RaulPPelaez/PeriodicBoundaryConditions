@@ -1,7 +1,7 @@
 /*Raul P. Pelaez 2018. Read lines of a file into numbers in an array and viceversa
   See https://raulppelaez.github.io/c++/conversion/string/io/2018/01/17/fastest-cpp-string-to-double.html
 
-  If USE_BOST is defined, it will use boost:spirit and boost:karma to parse strings into numbers and viceversa, this is ~20% faster than std.
+  If USE_BOOST is defined, it will use boost:spirit and boost:karma to parse strings into numbers and viceversa, this is ~20% faster than std.
 */
 #ifndef SUPER_READ_H
 #define SUPER_READ_H
@@ -122,7 +122,7 @@ namespace superIO{
   template<class T>
   inline bool number2string(std::string &str, T const& value){
 
-    #ifdef USE_BOST
+    #ifdef USE_BOOST
     return number2stringBOOST(str, value);
     #else
     return number2stringSTD(str, value);
