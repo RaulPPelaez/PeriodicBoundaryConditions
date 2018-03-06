@@ -169,7 +169,7 @@ namespace superIO{
       if(feof(in)) lastChunk = true;
 
       writeBuf.resize(WRITEBUFSIZE);
-      currentWriteIndex=1;
+      currentWriteIndex=0;
       
     }
     ~superFile(){

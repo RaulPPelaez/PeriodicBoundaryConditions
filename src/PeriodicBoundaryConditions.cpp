@@ -150,7 +150,7 @@ void PeriodicBoundaryConditions(FILE *in, Box box){
 
     //file::write calls are super cheap, so dont mind over using it
     file.write(n1.c_str(), n1.size());
-    file.write(line+lastChar, linesize - lastChar);
+    file.write(line+lastChar, linesize - lastChar-1);
     char endLine = '\n';
     file.write(&endLine, 1);
   }
