@@ -1,4 +1,4 @@
-/*Raul P. Pelaez 2018. Periodic Boundary Conditions.
+/*Raul P. Pelaez 2018-2020. Periodic Boundary Conditions.
   This utility applies PBC to the positions in a spunto-like file
 
   USAGE:
@@ -25,10 +25,9 @@
 
 */
 #include<string.h>
-#include"superRead.h"
+#include"superIO.h"
 #include"vector_algebra.h"
 
-using namespace superIO;
 using namespace std;
 
 struct Box{
@@ -120,46 +119,38 @@ void PeriodicBoundaryConditions(FILE *in, Box box){
 
   std::string n1; n1.reserve(100);
 
-  superFile file(in);
+  superIO::superInputFile file(in);
+  superIO::superOutputFile fileout;
   double3 tmp = make_double3(0);
 
   while(1){
-
     int linesize = file.getNextLine(line);
     if(linesize<0){
       break;
     }
     if(file.iscomment(line, linesize, '#')){
       line[linesize-1] = '\n';
-      file.write(line, linesize);
+      fileout.write(line, linesize);
+      fileout.flush();
       continue;
     }
-    // int color;
-    // double r;
-    int lastChar = string2numbers(line, linesize, ncols, (double*)&tmp.x);
-    
-    //lastChar += file.parseNumbers(line+lastChar, linesize-lastChar, 1, &r);
-    //lastChar += file.parseNumbers(line+lastChar, linesize-lastChar, 1, &color);
+    int lastChar = superIO::string2numbers(line, linesize, ncols, (double*)&tmp.x);
     tmp = box.apply_pbc(tmp);
-    
-
     n1.clear();
-    number2string(n1, tmp.x);     n1+=" ";
-    number2string(n1, tmp.y);     n1+=" ";
-    number2string(n1, tmp.z);     n1+=" ";
-
-    //file::write calls are super cheap, so dont mind over using it
-    file.write(n1.c_str(), n1.size());
-    file.write(line+lastChar, linesize - lastChar-1);
+    superIO::number2string(n1, tmp.x);     n1+=" ";
+    superIO::number2string(n1, tmp.y);     n1+=" ";
+    superIO::number2string(n1, tmp.z);     n1+=" ";
+    fileout.write(n1.c_str(), n1.size());
+    fileout.write(line+lastChar, linesize - lastChar-1);
     char endLine = '\n';
-    file.write(&endLine, 1);
+    fileout.write(&endLine, 1);
   }
 
  
 }
 
 void print_help(){
-std::cerr<<"Raul P. Pelaez 2018. Periodic Boundary Conditions."<<std::endl;
+std::cerr<<"Raul P. Pelaez 2018-2020. Periodic Boundary Conditions."<<std::endl;
 std::cerr<<"  This utility applies PBC to the positions in a spunto-like file"<<std::endl;
 std::cerr<<""<<std::endl;
 std::cerr<<"  USAGE:"<<std::endl;
